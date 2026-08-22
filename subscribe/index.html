@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Subscribe: Pittsburgh Shit</title>
+<meta name="description" content="Get the Pittsburgh weekend in your inbox every Thursday morning.">
+<meta property="og:title" content="Pittsburgh Shit">
+<meta property="og:description" content="Get the Pittsburgh weekend in your inbox every Thursday morning.">
+<meta property="og:type" content="website">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#0b0b0b;color:#f5f5f5;
+    font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:600px;margin:0 auto;padding:64px 24px 80px}
+  .mark{font-size:clamp(38px,11vw,62px);font-weight:900;line-height:0.9;
+    letter-spacing:1px;text-transform:uppercase}
+  .mark span{color:#FFB81C}
+  h1{font-size:22px;margin:34px 0 10px;font-weight:800}
+  p{color:#b8b8b8;font-size:17px;margin:0 0 16px}
+  .lede{font-size:19px;color:#ddd;margin-top:28px}
+  form{margin:30px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+  input,textarea{flex:1 1 260px;min-width:0;background:#161616;border:1px solid #303030;
+    color:#f5f5f5;padding:15px 14px;border-radius:6px;font-size:16px;font-family:inherit}
+  input:focus,textarea:focus{outline:2px solid #FFB81C;border-color:#FFB81C}
+  textarea{flex-basis:100%;min-height:90px;resize:vertical}
+  button{background:#FFB81C;color:#0b0b0b;font-weight:800;border:0;padding:15px 26px;
+    border-radius:6px;font-size:16px;cursor:pointer;flex:0 0 auto;font-family:inherit}
+  button:hover{background:#ffc94a}
+  button:disabled{opacity:.55;cursor:default}
+  /* Honeypot: off-screen and hidden from assistive tech, so only a bot fills it. */
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .msg{margin-top:18px;font-size:16px;min-height:24px}
+  .ok{color:#7fd48a} .err{color:#e78a8a}
+  .fine{color:#6d6d6d;font-size:14px;margin-top:34px}
+  a{color:#FFB81C}
+  .nav{margin-top:46px;font-size:15px;color:#6d6d6d}
+  .nav a{margin-right:18px;text-decoration:none}
+</style></head>
+<body><div class="wrap">
+  <div class="mark">Pittsburgh<br><span>Shit</span></div>
+
+  <h1>Get it every Thursday</h1>
+  <p>Drop your address in and confirm from the email we send. That is the whole
+     process.</p>
+
+  <form id="sub" novalidate>
+    <input type="email" name="email" placeholder="you@email.com" required autocomplete="email">
+    <div class="hp" aria-hidden="true">
+      <label>Leave this blank<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <button type="submit">Subscribe</button>
+  </form>
+  <div class="msg" id="sub-msg"></div>
+
+  <p class="fine">One email a week. Unsubscribe in one click, any time.
+     We never sell or share your address.</p>
+
+  <div class="nav">
+    <a href="/">Home</a><a href="/subscribe/">Subscribe</a><a href="/submit/">Submit an event</a>
+  </div>
+</div>
+<script>
+function wire(formId, route, okText) {
+  var f = document.getElementById(formId), m = document.getElementById(formId + '-msg');
+  f.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = f.querySelector('button');
+    btn.disabled = true; m.className = 'msg'; m.textContent = 'One second...';
+    var data = Object.fromEntries(new FormData(f).entries());
+    try {
+      var r = await fetch('https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup/' + route, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      var j = await r.json();
+      if (j.ok) { m.className = 'msg ok'; m.textContent = okText; f.reset(); }
+      else { m.className = 'msg err'; m.textContent = j.error || 'That did not work. Try again?'; }
+    } catch (err) {
+      m.className = 'msg err';
+      m.textContent = 'Could not reach the server. Try again in a minute?';
+    }
+    btn.disabled = false;
+  });
+}
+wire('sub', 'subscribe', 'Check your email and click the link to confirm.');
+</script>
+</body></html>
