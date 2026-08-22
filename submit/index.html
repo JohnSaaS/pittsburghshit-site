@@ -36,6 +36,10 @@
   a{color:#FFB81C}
   .nav{margin-top:46px;font-size:15px;color:#6d6d6d}
   .nav a{margin-right:18px;text-decoration:none}
+  .fact{border-left:3px solid #FFB81C;padding:4px 0 4px 16px;margin:30px 0 22px}
+  .fact-label{font-size:11px;letter-spacing:2px;color:#FFB81C;font-weight:800}
+  #fact-text{color:#b8b8b8;font-size:16px;margin:8px 0 6px;line-height:1.6}
+  #fact-src{font-size:13px;color:#FFB81C;text-decoration:none}
 </style></head>
 <body><div class="wrap">
   <div class="mark">Pittsburgh<br><span>Shit</span></div>
@@ -86,6 +90,51 @@ function wire(formId, route, okText) {
     btn.disabled = false;
   });
 }
+var FACTS = [{"text": "Mr. Yuk debuted in 1971 partly because the Pittsburgh Pirates had used a skull-and-crossbones logo since the 1930s, so local kids read that danger symbol as 'go Bucs,' not poison.", "url": "https://pittsburghpoisoncenter.wordpress.com/2021/03/10/history-of-mr-yuk/", "src": "the Pittsburgh Poison Center"}, {"text": "Before the deadly 1892 Homestead Strike, Henry Clay Frick had a 3-mile, 12-foot fence topped with barbed wire and rifle peepholes built around the steelworks to keep strikers out.", "url": "https://en.wikipedia.org/wiki/Homestead_strike", "src": "Wikipedia"}, {"text": "KDKA's Harold Arlin called the first-ever radio broadcast of a Major League game on August 5, 1921 (Pirates over Phillies, 8-5), speaking into a mic nicknamed the 'mushiphone.'", "url": "https://www.history.com/articles/first-mlb-game-radio-kdka-harold-arlin-pirates-padres", "src": "History.com"}, {"text": "Mary Cardwell Dawson founded the nation's first permanent Black-owned opera company inside a Homewood mansion in 1941; the house later sheltered Duke Ellington and Joe Louis as 'Mystery Manor.'", "url": "https://en.wikipedia.org/wiki/National_Negro_Opera_Company", "src": "Wikipedia"}, {"text": "At 11:44 a.m. on September 19, 1982, CMU professor Scott Fahlman posted ':-)' to a campus bulletin board as a marker for jokes: the first documented emoticon.", "url": "https://www.cmu.edu/125/stories/emoticon.html", "src": "Carnegie Mellon"}, {"text": "Pittsburgh once had 17 hillside inclines hauling people and coal up its bluffs; only the Monongahela (1870) and Duquesne (1877) survive today.", "url": "https://en.wikipedia.org/wiki/Monongahela_Incline", "src": "Wikipedia"}, {"text": "Pittsburgh's 'fourth river,' said to feed the Point State Park fountain, isn't a river at all. It's a sand-and-gravel Ice Age aquifer, and the fountain actually runs on treated city water.", "url": "https://www.wesa.fm/arts-sports-culture/2017-04-21/no-you-cant-kayak-under-the-golden-triangle-an-exploration-of-pittsburghs-fourth-river", "src": "WESA"}, {"text": "Andy Warhol was born in 1928 in a two-room tarpaper shack at 73 Orr Street in Pittsburgh's Soho neighborhood, one of two dozen identical shacks facing a muddy alley.", "url": "https://en.wikipedia.org/wiki/Andy_Warhol", "src": "Wikipedia"}, {"text": "The Big Mac was invented in 1967 by Jim Delligatti, who ran McDonald's franchises around Pittsburgh, and was tested only in his local stores before McDonald's added it nationwide in 1968.", "url": "https://en.wikipedia.org/wiki/Jim_Delligatti", "src": "Wikipedia"}, {"text": "Fallingwater began with a smaller job: Frank Lloyd Wright first designed Edgar Kaufmann's executive office atop his Pittsburgh department store, now on permanent display at London's V&A Museum.", "url": "https://fallingwater.org/history/the-kaufmanns-fallingwater/designing-fallingwater/", "src": "Fallingwater"}, {"text": "Homestead Grays catcher Josh Gibson, often called the best power hitter in baseball history, played most of his career in Pittsburgh and died there in January 1947, months before MLB's color line fell.", "url": "https://www.britannica.com/biography/Josh-Gibson", "src": "Britannica"}, {"text": "Pittsburgh's Hill District and nearby East End neighborhoods, once nicknamed 'Little Harlem,' produced Billy Strayhorn, Mary Lou Williams, Art Blakey, Erroll Garner and Ahmad Jamal.", "url": "https://www.allaboutjazz.com/pittsburgh-jazz-a-brief-history/", "src": "All About Jazz"}, {"text": "The banana split was invented in 1904 in Latrobe, PA, by 23-year-old Pitt pharmacy student David Strickler, moonlighting as a soda jerk at Tassell Pharmacy.", "url": "https://pabook.libraries.psu.edu/literary-cultural-heritage-map-pa/feature-articles/banana-split-rich-history", "src": "Penn State"}, {"text": "The 1948 Donora smog, in a mill town roughly 25 miles from Pittsburgh, killed 20 people within days and helped spur passage of the federal Clean Air Act.", "url": "https://en.wikipedia.org/wiki/1948_Donora_smog", "src": "Wikipedia"}, {"text": "The St. Patrick's Day Flood of 1936 pushed the Point to 46 feet, more than 7 feet above the prior 1907 record, and left roughly 135,000 Pittsburghers homeless.", "url": "https://www.heinzhistorycenter.org/blog/western-pennsylvania-history-st-patricks-day-flood-1936/", "src": "the Heinz History Center"}, {"text": "The North Side's Mexican War Streets are named for the 1846-48 Mexican-American War; the neighborhood's roads include Buena Vista, Palo Alto, Sherman and Monterey.", "url": "https://www.wesa.fm/arts-sports-culture/2022-05-05/how-the-mexican-war-streets-got-its-name", "src": "WESA"}, {"text": "George Romero shot 'Night of the Living Dead' (1968) around Pittsburgh and Evans City on a $100,000 budget, using Bosco chocolate syrup for blood and real roasted ham for the cannibalism scenes.", "url": "https://www.heinzhistorycenter.org/blog/western-pennsylvania-history-theyre-coming-get-night-living-dead/", "src": "the Heinz History Center"}, {"text": "Forbes Field's actual home plate is preserved under glass on the ground floor of Pitt's Posvar Hall, marking the exact spot where the Pirates played from 1909 to 1970.", "url": "https://en.wikipedia.org/wiki/Wesley_W._Posvar_Hall", "src": "Wikipedia"}, {"text": "Pittsburghese traces to Scots-Irish settlers: 'yinz' descends from 'you'uns,' and 'jagoff' comes from 'jag,' meaning to poke or irritate, like a jagger bush.", "url": "https://en.wikipedia.org/wiki/Jagoff", "src": "Wikipedia"}];
+
+function randomFact() {
+  if (!FACTS.length) return;
+  var f = FACTS[Math.floor(Math.random() * FACTS.length)];
+  document.getElementById('fact-text').textContent = f.text;
+  var a = document.getElementById('fact-src');
+  a.href = f.url; a.textContent = f.src;
+}
+
+function wireUnsub() {
+  var t = new URLSearchParams(location.search).get('t') || '';
+  var f = document.getElementById('unsub'), m = document.getElementById('unsub-msg');
+  if (!t) {
+    document.getElementById('u-head').textContent = 'That link looks incomplete';
+    document.getElementById('u-body').textContent =
+      'Use the unsubscribe link at the bottom of any issue, or just reply and we will sort it by hand.';
+    f.style.display = 'none';
+    return;
+  }
+  f.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = f.querySelector('button');
+    btn.disabled = true; m.className = 'msg'; m.textContent = 'One second...';
+    try {
+      var r = await fetch('https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup/unsubscribe?t=' + encodeURIComponent(t), {method: 'POST'});
+      var j = await r.json();
+      if (j.ok) {
+        document.getElementById('u-head').textContent = "Done. You're off the list.";
+        document.getElementById('u-body').textContent =
+          'Nothing else will arrive. Thanks for giving it a shot.';
+        document.getElementById('u-fine').textContent =
+          'Changed your mind? The signup form is right where you left it.';
+        f.style.display = 'none'; m.textContent = '';
+      } else {
+        m.className = 'msg err'; m.textContent = 'That did not work. Try again?';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      m.className = 'msg err'; m.textContent = 'Could not reach the server. Try again in a minute?';
+      btn.disabled = false;
+    }
+  });
+}
+
 wire('ev', 'submit', 'Got it. Thanks for the tip.');
 </script>
 </body></html>

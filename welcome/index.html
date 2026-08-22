@@ -2,10 +2,10 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Subscribe: Pittsburgh Shit</title>
-<meta name="description" content="Get the Pittsburgh weekend in your inbox every Thursday morning.">
+<title>You're in: Pittsburgh Shit</title>
+<meta name="description" content="Confirmed. First issue lands Thursday morning.">
 <meta property="og:title" content="Pittsburgh Shit">
-<meta property="og:description" content="Get the Pittsburgh weekend in your inbox every Thursday morning.">
+<meta property="og:description" content="Confirmed. First issue lands Thursday morning.">
 <meta property="og:type" content="website">
 <style>
   *{box-sizing:border-box}
@@ -44,21 +44,18 @@
 <body><div class="wrap">
   <div class="mark">Pittsburgh<br><span>Shit</span></div>
 
-  <h1>Get it every Thursday</h1>
-  <p>Drop your address in and confirm from the email we send. That is the whole
-     process.</p>
-
-  <form id="sub" novalidate>
-    <input type="email" name="email" placeholder="you@email.com" required autocomplete="email">
-    <div class="hp" aria-hidden="true">
-      <label>Leave this blank<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
-    </div>
-    <button type="submit">Subscribe</button>
-  </form>
-  <div class="msg" id="sub-msg"></div>
-
-  <p class="fine">One email a week. Unsubscribe in one click, any time.
-     We never sell or share your address.</p>
+  <h1>Alright then. You're in.</h1>
+  <p class="lede">First one lands Thursday morning, and every Thursday after that.</p>
+  <p>Here is the deal we are making. We will not tell you something is free unless we
+     checked. We will not send you to a show that sold out last week. And we will never
+     tell you how many events are in the email, because the number is not the point.</p>
+  <p>If a link is ever dead, hit reply and say so. A real person reads that.</p>
+  <div class="fact">
+    <div class="fact-label">WHILE YOU'RE HERE</div>
+    <div id="fact-text"></div>
+    <a id="fact-src" href="#">source</a>
+  </div>
+  <p class="fine">Now go outside.</p>
 
   <div class="nav">
     <a href="/">Home</a><a href="/subscribe/">Subscribe</a><a href="/submit/">Submit an event</a>
@@ -133,6 +130,6 @@ function wireUnsub() {
   });
 }
 
-wire('sub', 'subscribe', 'Check your email and click the link to confirm.');
+randomFact();
 </script>
 </body></html>
