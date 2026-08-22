@@ -73,6 +73,9 @@ function wire(formId, route, okText) {
     var btn = f.querySelector('button');
     btn.disabled = true; m.className = 'msg'; m.textContent = 'One second...';
     var data = Object.fromEntries(new FormData(f).entries());
+    // carry the referral code from the link they arrived on
+    var ref = new URLSearchParams(location.search).get('r');
+    if (ref) data.r = ref;
     try {
       var r = await fetch('https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup/' + route, {
         method: 'POST',
@@ -97,6 +100,22 @@ function randomFact() {
   document.getElementById('fact-text').textContent = f.text;
   var a = document.getElementById('fact-src');
   a.href = f.url; a.textContent = f.src;
+}
+
+function showReferral() {
+  var code = new URLSearchParams(location.search).get('r');
+  var box = document.getElementById('ref');
+  if (!code || !box) return;
+  var link = 'https://pittsburghshit.com/subscribe?r=' + encodeURIComponent(code);
+  document.getElementById('ref-link').value = link;
+  box.style.display = 'block';
+  document.getElementById('ref-copy').addEventListener('click', function () {
+    var i = document.getElementById('ref-link');
+    i.select(); i.setSelectionRange(0, 99999);
+    try { navigator.clipboard.writeText(i.value); } catch (e) { document.execCommand('copy'); }
+    var b = document.getElementById('ref-copy');
+    b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1800);
+  });
 }
 
 function wireUnsub() {
