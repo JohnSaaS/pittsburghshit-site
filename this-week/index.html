@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>This Week: Pittsburgh Shit</title>
+<meta name="description" content="This week's Pittsburgh Shit lineup, always current.">
+<meta property="og:title" content="Pittsburgh Shit: This Week">
+<meta property="og:description" content="This week's Pittsburgh Shit lineup, always current.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1A18;--paper:#F2EFE6;--paper-alt:#E6E1D2;--time:#EBDFCF;
+    --copper:#C97A3F;--copper-dk:#9A4A1C;--muted:#6E665B;--rule:#C9C2B2;--free:#C6D63A;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Courier Prime','Courier New',Courier,monospace;line-height:1.5;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 60px}
+  .masthead{background:var(--ink);color:var(--paper);padding:28px 24px;text-align:center}
+  .masthead .mark{font-size:26px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+  .masthead .sub{font-size:13px;letter-spacing:3px;color:var(--copper);margin-top:6px;
+    text-transform:uppercase}
+  .intro{padding:22px 24px;border-bottom:2px solid var(--ink)}
+  .intro h1{font-size:19px;margin:0 0 8px;color:var(--copper-dk)}
+  .intro p{color:var(--muted);margin:10px 0 0;font-size:14px}
+  .night{border:2px solid var(--ink);border-top:0}
+  .night:first-of-type{border-top:2px solid var(--ink)}
+  .night-head{background:var(--paper-alt);border-bottom:1px solid var(--rule);
+    padding:10px 16px;display:flex;justify-content:space-between;align-items:baseline}
+  .night-name{font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:14px}
+  .night-date{color:var(--muted);font-size:13px}
+  .night-empty{padding:16px;color:var(--muted);font-size:13px;font-style:italic}
+  .ev{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule)}
+  .ev:last-child{border-bottom:0}
+  .ev-time{flex:0 0 74px;background:var(--time);padding:6px 8px;font-size:12px;
+    text-align:center;align-self:flex-start;border:1px solid var(--rule);word-break:break-word}
+  .ev-main{flex:1 1 auto;min-width:0}
+  .ev-title{color:var(--copper-dk);font-weight:700;text-decoration:none;font-size:14px}
+  .ev-title:hover{text-decoration:underline}
+  .ev-venue{color:var(--muted);font-size:12px;margin-top:2px}
+  .ev-blurb{color:var(--ink);font-size:12px;margin-top:4px}
+  .ev-price{flex:0 0 auto;font-size:12px;font-weight:700;align-self:flex-start;padding:4px 8px}
+  .ev-price.free{background:var(--free);color:var(--ink)}
+  .status{padding:24px;color:var(--muted);font-size:14px}
+  .sub-block{padding:24px;border-top:2px solid var(--ink)}
+  .sub-block h2{font-size:16px;margin:0 0 6px}
+  .sub-block p{color:var(--muted);font-size:13px;margin:0}
+  form{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  input{flex:1 1 220px;min-width:0;background:var(--paper);border:1px solid var(--ink);
+    color:var(--ink);padding:12px;font-size:14px;font-family:inherit}
+  input:focus{outline:2px solid var(--copper)}
+  button{background:var(--copper);color:var(--paper);font-weight:700;border:0;padding:12px 20px;
+    cursor:pointer;font-family:inherit;text-transform:uppercase;letter-spacing:1px}
+  button:hover{background:var(--copper-dk)}
+  button:disabled{opacity:.5;cursor:default}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .msg{margin-top:10px;font-size:13px;min-height:18px}
+  .ok{color:#3f7a3f} .err{color:#a83a2a}
+  .nav{padding:20px 24px;font-size:12px;color:var(--muted)}
+  .nav a{color:var(--copper-dk);text-decoration:none;margin-right:14px}
+</style></head>
+<body><div class="wrap">
+  <div class="masthead">
+    <div class="mark">Pittsburgh Shit</div>
+    <div class="sub">This Week</div>
+  </div>
+  <div id="status" class="status" hidden></div>
+  <div id="issue" hidden>
+    <div class="intro">
+      <h1 id="issue-span"></h1>
+      <p id="issue-intro"></p>
+    </div>
+    <div id="lineup"></div>
+  </div>
+  <div class="sub-block">
+    <h2>Get this in your inbox every Thursday</h2>
+    <p>One email a week, free, unsubscribe any time.</p>
+    <form id="sub" novalidate>
+      <input type="email" name="email" placeholder="you@email.com" required autocomplete="email">
+      <div class="hp" aria-hidden="true">
+        <label>Leave this blank<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <button type="submit">Subscribe</button>
+    </form>
+    <div class="msg" id="sub-msg"></div>
+  </div>
+  <div class="nav">
+    <a href="/">Home</a><a href="/subscribe/?source=instagram">Subscribe</a><a href="/submit/">Submit an event</a>
+  </div>
+</div>
+<script>
+var FN = "https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup";
+var CURRENT_JSON_URL = "https://seswswjbdimrmotofcvj.supabase.co/storage/v1/object/public/pgh-images/current.json";
+
+// Every value below reaches the DOM through textContent or an attribute
+// setter, never through innerHTML. Titles and venues come from third-party
+// feeds; a title containing a script tag must render as inert text, not run.
+function el(tag, props, children) {
+  var e = document.createElement(tag);
+  if (props) {
+    for (var k in props) {
+      if (k === 'class') { e.className = props[k]; }
+      else if (k === 'text') { e.textContent = props[k]; }
+      else { e.setAttribute(k, props[k]); }
+    }
+  }
+  (children || []).forEach(function (c) { e.appendChild(c); });
+  return e;
+}
+
+function eventRow(ev) {
+  var row = el('div', {class: 'ev'});
+  row.appendChild(el('div', {class: 'ev-time', text: ev.event_time || ''}));
+  var main = el('div', {class: 'ev-main'});
+  main.appendChild(el('a', {
+    class: 'ev-title',
+    href: ev.ticket_url || '#',
+    target: '_blank',
+    rel: 'noopener',
+    text: ev.title || 'Untitled'
+  }));
+  if (ev.venue) { main.appendChild(el('div', {class: 'ev-venue', text: ev.venue})); }
+  if (ev.blurb) { main.appendChild(el('div', {class: 'ev-blurb', text: ev.blurb})); }
+  if (ev.is_multi_day) { main.appendChild(el('div', {class: 'ev-venue', text: 'Runs multiple days'})); }
+  row.appendChild(main);
+  var priceText = ev.is_free ? 'FREE' : (ev.price || '');
+  var priceClass = 'ev-price' + (ev.is_free ? ' free' : '');
+  row.appendChild(el('div', {class: priceClass, text: priceText}));
+  return row;
+}
+
+function renderIssue(data) {
+  document.getElementById('issue-span').textContent = data.span || 'This week';
+  document.getElementById('issue-intro').textContent = data.intro || '';
+  var lineup = document.getElementById('lineup');
+  lineup.textContent = '';
+  var nights = data.nights || [];
+  nights.forEach(function (night) {
+    var block = el('div', {class: 'night'});
+    var head = el('div', {class: 'night-head'});
+    head.appendChild(el('span', {class: 'night-name', text: night.name || ''}));
+    head.appendChild(el('span', {class: 'night-date', text: night.date_label || ''}));
+    block.appendChild(head);
+    var events = night.events || [];
+    if (events.length) {
+      events.forEach(function (ev) { block.appendChild(eventRow(ev)); });
+    } else {
+      block.appendChild(el('div', {class: 'night-empty', text: 'Nothing filed for this night yet.'}));
+    }
+    lineup.appendChild(block);
+  });
+  document.getElementById('issue').hidden = false;
+  document.getElementById('status').hidden = true;
+}
+
+function showStatus(text) {
+  var s = document.getElementById('status');
+  s.textContent = text;
+  s.hidden = false;
+  document.getElementById('issue').hidden = true;
+}
+
+async function loadIssue() {
+  showStatus('Loading this week...');
+  var res;
+  try {
+    res = await fetch(CURRENT_JSON_URL, {cache: 'no-store'});
+  } catch (networkErr) {
+    showStatus('Could not load this week right now. Try refreshing, or subscribe below and it will land in your inbox.');
+    return;
+  }
+  if (!res.ok) {
+    // Supabase Storage answers a missing object with HTTP 400, not 404, and
+    // puts the real reason in the body: {"statusCode":"404","error":"not_found",
+    // "code":"NoSuchKey"}. Measured against the live bucket. Checking only the
+    // HTTP status told every reader the site was broken when the truth was
+    // that no issue had shipped yet.
+    var missing = res.status === 404;
+    if (!missing) {
+      try {
+        var body = await res.text();
+        missing = body.indexOf('not_found') !== -1 || body.indexOf('NoSuchKey') !== -1;
+      } catch (readErr) { missing = false; }
+    }
+    showStatus(missing
+      ? 'Nothing filed yet, the first issue lands soon. Subscribe below and it will land in your inbox.'
+      : 'Could not load this week right now. Try refreshing, or subscribe below and it will land in your inbox.');
+    return;
+  }
+  var data;
+  try {
+    data = await res.json();
+  } catch (parseErr) {
+    showStatus('That did not load correctly. Try refreshing, or subscribe below and it will land in your inbox.');
+    return;
+  }
+  if (!data || !data.nights) {
+    showStatus('Nothing filed yet, the first issue lands soon. Subscribe below and it will land in your inbox.');
+    return;
+  }
+  renderIssue(data);
+}
+
+document.getElementById('sub').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  var f = e.target, btn = f.querySelector('button'), m = document.getElementById('sub-msg');
+  btn.disabled = true; m.className = 'msg'; m.textContent = 'One second...';
+  var data = Object.fromEntries(new FormData(f).entries());
+  data.source = 'instagram';
+  try {
+    var r = await fetch(FN + '/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    var j = await r.json();
+    if (j.ok) {
+      m.className = 'msg ok'; m.textContent = 'Check your email and click the link to confirm.'; f.reset();
+    } else {
+      m.className = 'msg err'; m.textContent = j.error || 'That did not work. Try again?';
+    }
+  } catch (err) {
+    m.className = 'msg err'; m.textContent = 'Could not reach the server. Try again in a minute?';
+  }
+  btn.disabled = false;
+});
+
+loadIssue();
+</script>
+</body></html>
