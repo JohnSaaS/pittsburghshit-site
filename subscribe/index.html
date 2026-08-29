@@ -34,6 +34,13 @@
   .ok{color:#7fd48a} .err{color:#e78a8a}
   .fine{color:#6d6d6d;font-size:14px;margin-top:34px}
   a{color:#FFB81C}
+  /* A real button, not a text link in a sentence. Ko-fi red so it never
+     competes with the gold Subscribe button, and a tap target big enough
+     to hit on a phone without aiming. */
+  .tip{display:inline-block;background:#FF5E5B;color:#fff;font-weight:800;
+    text-decoration:none;padding:15px 30px;border-radius:8px;font-size:16px;
+    min-width:200px;text-align:center}
+  .tip:hover{background:#ff7a78}
   .nav{margin-top:46px;font-size:15px;color:#6d6d6d}
   .nav a{margin-right:18px;text-decoration:none}
   .fact{border-left:3px solid #FFB81C;padding:4px 0 4px 16px;margin:30px 0 22px}
@@ -61,10 +68,6 @@
      We never sell or share your address.</p>
 
 
-  <p class="fine" style="margin-top:30px;">
-    This is free and always will be.
-    <a href="https://ko-fi.com/pittsburghshit">Throw a couple bucks in the jar</a> if you want to.
-  </p>
   <div class="nav">
     <a href="/">Home</a><a href="/subscribe/">Subscribe</a><a href="/submit/">Submit an event</a>
   </div>
@@ -72,6 +75,14 @@
 <script>
 function wire(formId, route, okText) {
   var f = document.getElementById(formId), m = document.getElementById(formId + '-msg');
+  var qsError = new URLSearchParams(location.search).get('e');
+  if (qsError === 'expired') {
+    m.className = 'msg err';
+    m.textContent = 'That confirmation link is too old, so enter your email again and we will send a fresh one.';
+  } else if (qsError === 'badlink') {
+    m.className = 'msg err';
+    m.textContent = 'That link arrived without its code, so enter your email again and we will send a new one.';
+  }
   f.addEventListener('submit', async function (e) {
     e.preventDefault();
     var btn = f.querySelector('button');
