@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pittsburghshit.com/sitemap.xml

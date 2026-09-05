@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pittsburgh Shit</title>
 <meta name="description" content="The weekend in Pittsburgh, sorted. Every Thursday morning, free.">
+<link rel="canonical" href="https://pittsburghshit.com/">
 <meta property="og:title" content="Pittsburgh Shit">
 <meta property="og:description" content="The weekend in Pittsburgh, sorted. Every Thursday morning, free.">
 <meta property="og:type" content="website">
@@ -47,6 +48,25 @@
   .fact-label{font-size:11px;letter-spacing:2px;color:#FFB81C;font-weight:800}
   #fact-text{color:#b8b8b8;font-size:16px;margin:8px 0 6px;line-height:1.6}
   #fact-src{font-size:13px;color:#FFB81C;text-decoration:none}
+  /* Archive pages only (see render_archive_page / render_archive_index_page
+     below), namespaced with arch-/night- so nothing above collides. */
+  .night-block{margin:32px 0}
+  .night-h{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#FFB81C;
+    font-weight:800;border-bottom:1px solid #303030;padding-bottom:8px;margin-bottom:6px}
+  .night-h .night-date{color:#6d6d6d;font-weight:400;text-transform:none;letter-spacing:0}
+  .arch-ev{padding:14px 0;border-bottom:1px solid #1c1c1c}
+  .arch-ev:last-child{border-bottom:0}
+  .arch-time{color:#6d6d6d;font-size:13px}
+  .arch-title{color:#FFB81C;font-weight:800;text-decoration:none;font-size:17px}
+  .arch-title:hover{text-decoration:underline}
+  .arch-price{display:inline-block;font-size:12px;font-weight:800;color:#7fd48a;margin-left:10px}
+  .arch-venue{color:#b8b8b8;font-size:14px;margin-top:3px}
+  .arch-blurb{color:#8a8a8a;font-size:14px;margin-top:5px}
+  .arch-empty{color:#6d6d6d;font-size:14px;font-style:italic;padding:6px 0}
+  .arch-list{list-style:none;padding:0;margin:22px 0}
+  .arch-list li{padding:14px 0;border-bottom:1px solid #1c1c1c}
+  .arch-list a{font-weight:800;font-size:18px;text-decoration:none;color:#FFB81C}
+  .arch-list a:hover{text-decoration:underline}
 </style></head>
 <body><div class="wrap">
   <div class="mark">Pittsburgh<br><span>Shit</span></div>
@@ -92,6 +112,13 @@ function wire(formId, route, okText) {
     // carry the referral code from the link they arrived on
     var ref = new URLSearchParams(location.search).get('r');
     if (ref) data.r = ref;
+    // carry the channel tag. footer.py stamps ?source=<venue> onto every
+    // subscribe link it puts in a Facebook, Meetup or Reddit post, so the tag
+    // is already inside links that are live in the wild. Dropping it here made
+    // every one of those signups land as the function's "web" default, which
+    // is indistinguishable from someone typing the domain.
+    var src = new URLSearchParams(location.search).get('source');
+    if (src) data.source = src;
     try {
       var r = await fetch('https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup/' + route, {
         method: 'POST',
