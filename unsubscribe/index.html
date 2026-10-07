@@ -189,6 +189,39 @@ function wireUnsub() {
   });
 }
 
+function wireHold() {
+  var t = new URLSearchParams(location.search).get('t') || '';
+  var f = document.getElementById('hold'), m = document.getElementById('hold-msg');
+  if (!t) {
+    document.getElementById('h-head').textContent = 'That link looks incomplete';
+    document.getElementById('h-body').textContent =
+      'Use the hold link in the preview email, or reply and we will sort it by hand.';
+    f.style.display = 'none';
+    return;
+  }
+  f.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = f.querySelector('button');
+    btn.disabled = true; m.className = 'msg'; m.textContent = 'One second...';
+    try {
+      var r = await fetch('https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup/hold?t=' + encodeURIComponent(t), {method: 'POST'});
+      var j = await r.json();
+      if (j.ok) {
+        document.getElementById('h-head').textContent = 'Held. Thursday will not send it.';
+        document.getElementById('h-body').textContent =
+          'The ' + j.issue_date + ' issue is stopped. Publish it by hand from GitHub Actions when it is ready.';
+        f.style.display = 'none'; m.textContent = '';
+      } else {
+        m.className = 'msg err'; m.textContent = j.error || 'That did not work. Try again?';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      m.className = 'msg err'; m.textContent = 'Could not reach the server. Try again in a minute?';
+      btn.disabled = false;
+    }
+  });
+}
+
 wireUnsub();
 </script>
 </body></html>

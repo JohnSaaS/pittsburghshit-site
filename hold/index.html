@@ -2,11 +2,11 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pittsburgh events archive: every weekend, Pittsburgh Shit</title>
-<meta name="description" content="Every weekend Pittsburgh Shit has actually sent, with the full lineup for each one.">
-<link rel="canonical" href="https://pittsburghshit.com/archive/">
-<meta property="og:title" content="Pittsburgh events archive: every weekend, Pittsburgh Shit">
-<meta property="og:description" content="Every weekend Pittsburgh Shit has actually sent, with the full lineup for each one.">
+<title>Hold this issue: Pittsburgh Shit</title>
+<meta name="description" content="Stop Thursday&#x27;s automatic send.">
+<link rel="canonical" href="https://pittsburghshit.com/hold/">
+<meta property="og:title" content="Hold this issue: Pittsburgh Shit">
+<meta property="og:description" content="Stop Thursday&#x27;s automatic send.">
 <meta property="og:type" content="website">
 <style>
   *{box-sizing:border-box}
@@ -70,9 +70,15 @@
 </style></head>
 <body><div class="wrap">
   <div class="mark">Pittsburgh<br><span>Shit</span></div>
-<h1>Every issue</h1>
-<p>Every weekend we have actually sent, in order.</p>
-<ul class="arch-list"><li><a href="/archive/2026-10-01/">October 1 to 4, 2026</a></li><li><a href="/archive/2026-09-24/">September 24 to 27, 2026</a></li><li><a href="/archive/2026-09-17/">September 17 to 20, 2026</a></li><li><a href="/archive/2026-09-10/">September 10 to 13, 2026</a></li><li><a href="/archive/2026-09-03/">September 3 to 6, 2026</a></li></ul>
+
+  <h1 id="h-head">Hold this issue?</h1>
+  <p id="h-body">This stops Thursday's automatic send. You can still publish it by
+     hand from GitHub Actions.</p>
+  <form id="hold" novalidate>
+    <button type="submit">Hold this issue</button>
+  </form>
+  <div class="msg" id="hold-msg"></div>
+
 
   <div class="nav">
     <a href="/">Home</a><a href="/subscribe/">Subscribe</a><a href="/submit/">Submit an event</a>
@@ -214,6 +220,6 @@ function wireHold() {
   });
 }
 
-
+wireHold();
 </script>
 </body></html>
