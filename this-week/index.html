@@ -97,6 +97,22 @@
 var FN = "https://seswswjbdimrmotofcvj.supabase.co/functions/v1/signup";
 var CURRENT_JSON_URL = "https://seswswjbdimrmotofcvj.supabase.co/storage/v1/object/public/pgh-images/current.json";
 
+var CHANNEL_KEY = 'pgh_source';
+function urlTag() {
+  var q = new URLSearchParams(location.search);
+  return (q.get('source') || q.get('utm_source') || '').slice(0, 40) || null;
+}
+(function () {
+  var t = urlTag();
+  if (t) { try { localStorage.setItem(CHANNEL_KEY, t); } catch (e) {} }
+})();
+function channelTag() {
+  var t = urlTag();
+  if (t) return t;
+  try { return localStorage.getItem(CHANNEL_KEY); } catch (e) { return null; }
+}
+
+
 // Every value below reaches the DOM through textContent or an attribute
 // setter, never through innerHTML. Titles and venues come from third-party
 // feeds; a title containing a script tag must render as inert text, not run.
@@ -211,7 +227,9 @@ document.getElementById('sub').addEventListener('submit', async function (e) {
   var f = e.target, btn = f.querySelector('button'), m = document.getElementById('sub-msg');
   btn.disabled = true; m.className = 'msg'; m.textContent = 'One second...';
   var data = Object.fromEntries(new FormData(f).entries());
-  data.source = 'instagram';
+  // The Instagram bio points here, so untagged means Instagram, but a tag
+  // from the page they actually arrived on is more specific.
+  data.source = channelTag() || 'instagram';
   try {
     var r = await fetch(FN + '/subscribe', {
       method: 'POST',
