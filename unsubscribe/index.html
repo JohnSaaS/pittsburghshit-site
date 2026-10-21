@@ -93,14 +93,32 @@ function urlTag() {
   var q = new URLSearchParams(location.search);
   return (q.get('source') || q.get('utm_source') || '').slice(0, 40) || null;
 }
+function fromSearch() {
+  try {
+    var h = new URL(document.referrer).hostname;
+    var hosts = ['google.', 'bing.com', 'duckduckgo.com', 'search.yahoo.com', 'search.brave.com'];
+    for (var i = 0; i < hosts.length; i++) { if (h.indexOf(hosts[i]) !== -1) return true; }
+  } catch (e) {}
+  return false;
+}
+function storedTag() {
+  try { return localStorage.getItem(CHANNEL_KEY); } catch (e) { return null; }
+}
 (function () {
   var t = urlTag();
-  if (t) { try { localStorage.setItem(CHANNEL_KEY, t); } catch (e) {} }
+  if (t) { try { localStorage.setItem(CHANNEL_KEY, t); } catch (e) {} return; }
+  // A search arrival only fills an empty memory, so it never overwrites a
+  // remembered channel, and storing it keeps it through the click to /subscribe/.
+  if (!storedTag() && fromSearch()) {
+    try { localStorage.setItem(CHANNEL_KEY, 'search'); } catch (e) {}
+  }
 })();
 function channelTag() {
   var t = urlTag();
   if (t) return t;
-  try { return localStorage.getItem(CHANNEL_KEY); } catch (e) { return null; }
+  var s = storedTag();
+  if (s) return s;
+  return fromSearch() ? 'search' : null;
 }
 
 function wire(formId, route, okText) {
