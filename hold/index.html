@@ -72,8 +72,7 @@
   <div class="mark">Pittsburgh<br><span>Shit</span></div>
 
   <h1 id="h-head">Hold this issue?</h1>
-  <p id="h-body">This stops Thursday's automatic send. You can still publish it by
-     hand from GitHub Actions.</p>
+  <p id="h-body">This stops Thursday's automatic send. Nothing goes out until you release it.</p>
   <form id="hold" novalidate>
     <button type="submit">Hold this issue</button>
   </form>
@@ -242,7 +241,7 @@ function wireHold() {
       if (j.ok) {
         document.getElementById('h-head').textContent = 'Held. Thursday will not send it.';
         document.getElementById('h-body').textContent =
-          'The ' + j.issue_date + ' issue is stopped. Publish it by hand from GitHub Actions when it is ready.';
+          'The ' + j.issue_date + ' issue is stopped. Nothing goes out until you release it.';
         f.style.display = 'none'; m.textContent = '';
       } else {
         m.className = 'msg err'; m.textContent = j.error || 'That did not work. Try again?';
