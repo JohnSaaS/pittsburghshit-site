@@ -244,7 +244,7 @@ function wireHold() {
       if (j.ok) {
         document.getElementById('h-head').textContent = 'Held. Thursday will not send it.';
         document.getElementById('h-body').textContent =
-          'The ' + j.issue_date + ' issue is stopped. Nothing goes out until you release it.';
+          'The ' + j.issue_date + ' issue is stopped. Publish it by hand from GitHub Actions when it is ready.';
         f.style.display = 'none'; m.textContent = '';
       } else {
         m.className = 'msg err'; m.textContent = j.error || 'That did not work. Try again?';
